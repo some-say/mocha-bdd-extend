@@ -1,0 +1,35 @@
+{
+  "name": "mocha-bdd-extend",
+  "version": "0.1.0",
+  "description": "Extend BDD Interfaces for Mocha",
+  "author": "Aleksander Szmigiel <kontakt@some-say.com>",
+  "homepage": "https://github.com/some-say/mocha-bdd-extend",
+  "keywords": [
+    "mocha",
+    "step",
+    "test",
+    "bdd",
+    "extend",
+    "scenarios",
+    "sequence"
+  ],
+  "license": "MIT",
+  "main": "./index.js",
+  "scripts": {
+    "test": "mocha --reporter spec --slow 200 --timeout 10000 --require ./index.js --ui index --check-leaks ./test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/some-say/mocha-bdd-extend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/some-say/mocha-bdd-extend/issues"
+  },
+  "devDependencies": {
+    "chai": "~3.4.0",
+    "mocha": "~2.3.3"
+  },
+  "dependencies": {
+    "mocha": "~2.3.3"
+  }
+}
