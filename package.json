@@ -31,5 +31,8 @@
   },
   "dependencies": {
     "mocha": "~2.3.3"
+  },
+  "directories": {
+    "test": "test"
   }
 }
