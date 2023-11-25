@@ -1,6 +1,6 @@
 {
   "name": "mocha-bdd-extend",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "type": "commonjs",
   "description": "Extend BDD Interfaces for Mocha",
   "author": "Aleksander Szmigiel <kontakt@some-say.com>",
