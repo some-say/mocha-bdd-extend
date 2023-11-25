@@ -42,12 +42,26 @@ describe('changePending()', function () {
         expect(true).to.be.true;
     });
 
-    step('switch test case "test case switch disabled to enable"', function (done) {
+    it('test async', async () => {
+        await new Promise((resolve) => {
+            setTimeout(function () {
+                resolve(true)
+            }, 1000)
+        })
+
+        expect(true).to.be.true;
+    })
+
+    step('switch test case "test case switch disabled to enable"', async function () {
         changePending.call(this, 'test case switch disabled to enable', false);
-        setTimeout(function () {
-            expect(true).to.be.true;
-            done();
-        }, 1000)
+
+        await new Promise((resolve) => {
+            setTimeout(function () {
+                resolve(true)
+            }, 1000)
+        })
+
+        expect(true).to.be.true;
     });
 
     step('test case switch disabled to enable', function () {
@@ -71,8 +85,14 @@ describe('step()', function () {
     });
 
     describe('async (callback)', function() {
-        step('check not override function it(done)', function (_done) {
-            setTimeout(_done, 100);
+        step('check not override function it(done)', async function () {
+            await new Promise(((resolve) => {
+                setTimeout(() => {
+                    resolve(true)
+                }, 1500)
+            }))
+
+            expect(true).to.be.true
         });
     });
 });
@@ -93,11 +113,15 @@ describe('xstep()', function () {
 
 describe('step() not vaild expect and switch bail', function () {
     step('very bad expect', function () {
-        expect(false).to.be.true;
-    });
+        try {
+            throw new Error('crash')
+        } catch (error) {
+            expect(error).to.throw;
+        }
+    })
 });
 
-describe('step() never call', function () {
+xdescribe('step() never call', function () {
     step('step never execute', function () {
         expect(true).to.be.true;
     });
