@@ -10,12 +10,12 @@
  * https://github.com/mochajs/mocha/blob/master/lib/interfaces/bdd.js
  */
 
-var Mocha = require('mocha');
-var Suite = require('mocha/lib/suite');
-var Test = require('mocha/lib/test');
-var escapeRe = require('escape-string-regexp');
-var getParent = require('./lib/get-parent');
-var bailSuits = require('./lib/bail-suits');
+const Mocha = require('mocha');
+const Suite = require('mocha/lib/suite');
+const Test = require('mocha/lib/test');
+const escapeRe = require('escape-string-regexp');
+const getParent = require('./lib/get-parent');
+const bailSuits = require('./lib/bail-suits');
 
 /**
  * BDD-style interface:
@@ -35,10 +35,10 @@ var bailSuits = require('./lib/bail-suits');
  * @param {Suite} suite Root suite.
  */
 module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
-    var suites = [suite];
+    const suites = [suite];
 
     suite.on('pre-require', function(context, file, mocha) {
-        var common = require('mocha/lib/interfaces/common')(suites, context);
+        const common = require('mocha/lib/interfaces/common')(suites, context);
 
         var self = this;
 
@@ -54,7 +54,7 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          */
 
         context.describe = context.context = function(title, fn) {
-            var suite = Suite.create(suites[0], title);
+            const suite = Suite.create(suites[0], title);
             suite.file = file;
             suites.unshift(suite);
             fn.call(suite);
@@ -67,7 +67,7 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          */
 
         context.xdescribe = context.xcontext = context.describe.skip = function(title, fn) {
-            var suite = Suite.create(suites[0], title);
+            const suite = Suite.create(suites[0], title);
             suite.pending = true;
             suites.unshift(suite);
             fn.call(suite);
@@ -79,7 +79,7 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          */
 
         context.describe.only = function(title, fn) {
-            var suite = context.describe(title, fn);
+            const suite = context.describe(title, fn);
             mocha.grep(suite.fullTitle());
             return suite;
         };
@@ -91,11 +91,11 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          */
 
         context.it = context.specify = function(title, fn) {
-            var suite = suites[0];
+            const suite = suites[0];
             if (suite.pending) {
                 fn = null;
             }
-            var test = new Test(title, fn);
+            const test = new Test(title, fn);
             test.file = file;
             suite.addTest(test);
             return test;
@@ -106,8 +106,8 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          */
 
         context.it.only = function(title, fn) {
-            var test = context.it(title, fn);
-            var reString = '^' + escapeRe(test.fullTitle()) + '$';
+            const test = context.it(title, fn);
+            const reString = '^' + escapeRe(test.fullTitle()) + '$';
             mocha.grep(new RegExp(reString));
             return test;
         };
@@ -124,32 +124,28 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
          * Step test case
          */
         context.step = function(title, fn) {
-            var syncStep = function () {
-                var self = this;
-
+            const syncStep = async function () {
                 try {
-                    fn.call(self);
+                    await fn.call(this);
                 } catch (error) {
-                    bailSuits(getParent(self.test));
-                    self.test.parent._bail = true;
+                    bailSuits(getParent(this.test));
+                    this.test.parent._bail = true;
 
                     throw error;
                 }
             };
 
-            var asyncStep = function (done) {
-                var self = this;
-
-                function onError() {
-                    bailSuits(getParent(self.test));
-                    self.test.parent._bail = true;
+            const asyncStep = async function (done) {
+                const onError = () => {
+                    bailSuits(getParent(this.test));
+                    this.test.parent._bail = true;
                     process.removeListener('uncaughtException', onError);
                 }
 
                 process.addListener('uncaughtException', onError);
 
                 try {
-                    fn.call(self, function(error) {
+                    fn.call(this, function(error) {
                         if (error) {
                             onError();
                             done(error);
@@ -177,13 +173,13 @@ module.exports = Mocha.interfaces['bdd-extend'] = function(suite) {
         };
 
         context.changePending = function (title, isPending) {
-            var suiteTests = suites[0].tests;
+            let suiteTests = suites[0].tests;
 
             if (suiteTests && suiteTests.length === 0) {
                 suiteTests = this.test.parent.tests;
             }
 
-            for (var i = 0, j = suiteTests.length; i < j; i++) {
+            for (let i = 0, j = suiteTests.length; i < j; i++) {
                 if (suiteTests[i].title === title) {
                     suiteTests[i].pending = isPending;
                 }
