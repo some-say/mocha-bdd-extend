@@ -29,10 +29,10 @@
   "devDependencies": {
     "chai": "~4.3.10",
     "escape-string-regexp": "^4.0.0",
-    "mocha": "~10.2.0"
+    "mocha": "~10.8.2"
   },
   "dependencies": {
-    "mocha": "~10.2.0",
+    "mocha": "~10.8.2",
     "escape-string-regexp": "^4.0.0"
   },
   "directories": {
